@@ -1,4 +1,4 @@
-package com.xmn.midicontroller.screens.presets.settings
+package com.xmn.midicontroller.screens.settings
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer

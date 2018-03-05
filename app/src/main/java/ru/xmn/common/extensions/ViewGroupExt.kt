@@ -11,3 +11,6 @@ val ViewGroup.views: List<View>
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, false)
 }
+
+inline fun <reified T: View> ViewGroup.inflateCast(@LayoutRes layoutRes: Int) =
+        LayoutInflater.from(context).inflate(layoutRes, this, false) as T

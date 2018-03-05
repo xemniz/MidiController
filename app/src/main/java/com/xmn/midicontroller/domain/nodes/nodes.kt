@@ -5,7 +5,7 @@ import com.xmn.midicontroller.domain.presentation.PresetNodeGroup
 
 
 data class PagerNode(override val childs: MutableList<PresetNode>) : PresetNodeGroup
-data class GridGroupNode(override val childs: MutableList<PresetNode>) : PresetNodeGroup
+data class GridGroupNode(override val childs: MutableList<PresetNode> = ArrayList(), val height: Int, val width: Int) : PresetNodeGroup
 data class GridItemNode(
         override val childs: MutableList<PresetNode>,
         val row: Int,

@@ -3,6 +3,7 @@ package com.xmn.midicontroller.domain.router.hardware
 import com.xmn.midicontroller.domain.model.NrpnValue
 import com.xmn.midicontroller.domain.model.MidiControlType
 import com.xmn.midicontroller.domain.model.MidiMessage
+import com.xmn.midicontroller.midiservice.MidiConstants
 
 class MidiHardwareService(private val midiHardwareGateway: MidiHardwareGateway) {
 

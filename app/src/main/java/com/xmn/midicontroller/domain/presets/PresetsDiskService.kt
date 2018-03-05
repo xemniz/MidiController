@@ -4,8 +4,9 @@ import com.xmn.midicontroller.app.App
 import com.xmn.midicontroller.domain.model.Preset
 import com.xmn.midicontroller.domain.serialization.NodeSerializer
 import java.io.File
+import javax.inject.Inject
 
-class PresetsDiskService(val nodeSerializer: NodeSerializer) {
+class PresetsDiskService @Inject constructor(val nodeSerializer: NodeSerializer) {
     private val folderPath = "${App.context.filesDir.absolutePath}/presets/"
     private fun filePath(name: String) = "$folderPath$name.json"
 
@@ -20,7 +21,8 @@ class PresetsDiskService(val nodeSerializer: NodeSerializer) {
     }
 
     fun presetNames(): List<String> {
-        return File(folderPath).listFiles().map { it.name.replace(".json", "") }
+        val listFiles = File(folderPath).listFiles() ?: emptyArray<File>()
+        return listFiles.map { it.name.replace(".json", "") }
     }
 
     fun preset(name: String): Preset {

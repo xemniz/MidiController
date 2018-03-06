@@ -1,31 +1,31 @@
 package com.xmn.midicontroller.domain.presets
 
-import com.xmn.midicontroller.domain.model.Preset
+import com.xmn.midicontroller.domain.model.PresetData
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import javax.inject.Inject
 
 class PresetRepository @Inject constructor(val presetsDiskService: PresetsDiskService) {
-    private val behaviorProcessor: BehaviorProcessor<List<String>> = BehaviorProcessor.create<List<String>>()
+    private val presetNames: BehaviorProcessor<List<String>> = BehaviorProcessor.create<List<String>>()
 
     init {
         refreshNames()
     }
 
     fun presetNames(): Flowable<List<String>> {
-        return behaviorProcessor
+        return presetNames
     }
 
-    fun preset(name: String): Preset {
+    fun preset(name: String): PresetData {
         return presetsDiskService.preset(name)
     }
 
-    fun savePreset(preset: Preset) {
+    fun savePreset(preset: PresetData) {
         presetsDiskService.save(preset)
         refreshNames()
     }
 
     private fun refreshNames() {
-        behaviorProcessor.onNext(presetsDiskService.presetNames())
+        presetNames.onNext(presetsDiskService.presetNames())
     }
 }

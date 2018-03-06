@@ -1,6 +1,6 @@
 package com.xmn.midicontroller.domain.serialization
 
-import com.xmn.midicontroller.domain.model.Preset
+import com.xmn.midicontroller.domain.model.PresetData
 import com.xmn.midicontroller.domain.nodes.ControlNode
 import com.xmn.midicontroller.domain.nodes.GridGroupNode
 import com.xmn.midicontroller.domain.nodes.GridItemNode
@@ -11,7 +11,7 @@ class NodeSerializerTest {
 
     @Test
     fun serialize() {
-        val preset = Preset("name", GridGroupNode(mutableListOf(
+        val preset = PresetData("name", GridGroupNode(mutableListOf(
                 GridItemNode(mutableListOf(ControlNode("", "")), 1, 1, 1, 1),
                 GridItemNode(mutableListOf(ControlNode("", "")), 1, 1, 1, 1),
                 GridItemNode(mutableListOf(ControlNode("", "")), 1, 1, 1, 1)

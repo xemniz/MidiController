@@ -1,7 +1,7 @@
 package com.xmn.midicontroller.domain.presets
 
 import com.xmn.midicontroller.app.App
-import com.xmn.midicontroller.domain.model.Preset
+import com.xmn.midicontroller.domain.model.PresetData
 import com.xmn.midicontroller.domain.serialization.NodeSerializer
 import java.io.File
 import javax.inject.Inject
@@ -10,7 +10,7 @@ class PresetsDiskService @Inject constructor(val nodeSerializer: NodeSerializer)
     private val folderPath = "${App.context.filesDir.absolutePath}/presets/"
     private fun filePath(name: String) = "$folderPath$name.json"
 
-    private fun serialize(currentPreset: Preset) = nodeSerializer.serialize(currentPreset)
+    private fun serialize(currentPreset: PresetData) = nodeSerializer.serialize(currentPreset)
     private fun deserialize(currentPreset: String) = nodeSerializer.deSerialize(currentPreset)
 
     private fun checkFolder() {
@@ -25,18 +25,18 @@ class PresetsDiskService @Inject constructor(val nodeSerializer: NodeSerializer)
         return listFiles.map { it.name.replace(".json", "") }
     }
 
-    fun preset(name: String): Preset {
+    fun preset(name: String): PresetData {
         checkFolder()
 
         val file = File(filePath(name))
         if (file.exists()) {
-            val presetData: Preset = deserialize(file.readText())
+            val presetData: PresetData = deserialize(file.readText())
             return presetData
         } else
             throw IllegalArgumentException()
     }
 
-    fun save(currentPreset: Preset) {
+    fun save(currentPreset: PresetData) {
         checkFolder()
 
         val presetText: String = serialize(currentPreset)

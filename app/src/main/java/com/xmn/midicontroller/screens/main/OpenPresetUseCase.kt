@@ -1,13 +1,14 @@
 package com.xmn.midicontroller.screens.main
 
 import android.arch.lifecycle.MutableLiveData
-import com.xmn.midicontroller.domain.model.Preset
+import com.xmn.midicontroller.domain.model.Node
+import com.xmn.midicontroller.domain.model.PresetData
 import com.xmn.midicontroller.domain.presets.PresetRepository
 import javax.inject.Inject
 
 class OpenPresetUseCase @Inject constructor(private val presetRepository: PresetRepository,
                                             private val lastPresetNameGateway: LastPresetNameGateway) {
-    val presetLiveData: MutableLiveData<Preset> = MutableLiveData()
+    val presetLiveData: MutableLiveData<PresetData> = MutableLiveData()
     val editStateLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
@@ -15,7 +16,7 @@ class OpenPresetUseCase @Inject constructor(private val presetRepository: Preset
     }
 
     private fun openLastPreset() {
-        presetLiveData.value = lastOpenedPreset() ?: Preset.new()
+        presetLiveData.value = lastOpenedPreset() ?: PresetData.new()
         editStateLiveData.value = false
     }
 
@@ -29,11 +30,15 @@ class OpenPresetUseCase @Inject constructor(private val presetRepository: Preset
         editStateLiveData.value = !currentEditState
     }
 
-    private fun lastOpenedPreset(): Preset? {
+    private fun lastOpenedPreset(): PresetData? {
         val lastPresetName = lastPresetNameGateway.retreive()
         return when (lastPresetName) {
             null -> null
             else -> presetRepository.preset(lastPresetName)
         }
+    }
+
+    fun addNode(parentNodeId: String, node: Node) {
+
     }
 }

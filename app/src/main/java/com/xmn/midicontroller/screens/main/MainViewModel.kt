@@ -24,40 +24,35 @@ class AddNodeUseCase {
         addNodeDialogState.value = AddNodeDialogState.Idle
     }
 
-    fun requestAddNode(nodeId: String) {
-        addNodeDialogState.value = AddNodeDialogState.ChooseNodeType(nodeId, listOf("Grid"))
-    }
+    private val nodeBuilders = listOf(GridNodeBuilder())
 
-    fun nodeChoosen(nodeId: String, nodeType: String) {
-        addNodeDialogState.value = AddNodeDialogState.ChooseNodeType(nodeId, listOf("Grid"))
+    fun requestAddNode(nodeId: String) {
+        addNodeDialogState.value = AddNodeDialogState.ChooseNodeType(nodeId, nodeBuilders)
     }
 }
 
 sealed class AddNodeDialogState {
     object Idle : AddNodeDialogState()
-    class ChooseNodeType(val parentNodeId: String, val nodeTypeNames: List<String>) : AddNodeDialogState()
+    class ChooseNodeType(val parentNodeId: String, val nodeTypeNames: List<NodeBuilder>) : AddNodeDialogState()
 }
 
 interface NodeBuilder {
     val name: String
-    val needParams: Boolean
-    val onNodeCreated: (Node) -> Unit
+    fun drawCreateParams(parent: ViewGroup, onNodeCreated: (Node) -> Unit)
 }
 
-class GridNodeBuilder(override val onNodeCreated: (Node) -> Unit) : NodeBuilder {
-
+class GridNodeBuilder : NodeBuilder {
     override val name: String = "Grid"
-    override val needParams: Boolean = true
 
-    fun drawCreateParams(parent: ViewGroup) {
-        parent.inflate(R.layout.grid_params).apply {
-            ok.setOnClickListener {
-                val gridNode = GridNode(GridGroupNode(height = grid_height.text.toString().toInt(), width = grid_width.text.toString().toInt()))
-                onNodeCreated(gridNode)
+    override fun drawCreateParams(parent: ViewGroup, onNodeCreated: (Node) -> Unit) {
+        parent.apply {
+            removeAllViews()
+            inflate(R.layout.grid_params).apply {
+                ok.setOnClickListener {
+                    val gridNode = GridNode(GridGroupNode(height = grid_height.text.toString().toInt(), width = grid_width.text.toString().toInt()))
+                    onNodeCreated(gridNode)
+                }
             }
         }
     }
 }
-
-
-class GridNodeParams(val height: Int, val width: Int)
